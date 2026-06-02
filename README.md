@@ -103,9 +103,8 @@ Pour réaliser ce projet, plusieurs technologies ont été utilisées :
 
 - HTML
 - CSS
-- PHP
+- Django
 - MySQL
-- Bootstrap
 
 ---
 
