@@ -1,165 +1,127 @@
-# SAE-Django
+# Gestion de Drive
 
-# Gestion de Drive – Application Web
+## À propos du projet
 
-## Présentation
 
-Cette application web permet la gestion complète d'un Drive. Elle offre aux utilisateurs la possibilité de gérer les produits, les catégories, les clients et les commandes, tout en assurant le suivi des achats effectués par les clients.
-
-L'objectif du projet est de mettre en œuvre une interface de gestion reposant sur un système CRUD (Create, Read, Update, Delete) pour l'ensemble des données du Drive.
+L'application reproduit le fonctionnement simplifié d'un service de Drive où les clients peuvent passer des commandes parmi différents produits disponibles.
 
 ---
 
 ## Fonctionnalités
 
-### Gestion des catégories de produits
+L'application permet de gérer plusieurs types de données :
 
-Chaque catégorie contient les informations suivantes :
+### Les catégories
 
-- Identifiant
-- Nom
-- Descriptif
+Les catégories servent à classer les produits selon leur nature (boissons, produits laitiers, épicerie, etc.).
 
-Fonctionnalités disponibles :
+Pour chaque catégorie, il est possible de :
 
-- Ajouter une catégorie
-- Consulter la liste des catégories
-- Modifier une catégorie
-- Supprimer une catégorie
+- ajouter une catégorie ;
+- consulter les catégories existantes ;
+- modifier une catégorie ;
+- supprimer une catégorie.
 
----
+### Les produits
 
-### Gestion des produits
+Chaque produit possède :
 
-Chaque produit contient les informations suivantes :
+- un nom ;
+- une date de péremption ;
+- une photo ;
+- une marque ;
+- un prix ;
+- une catégorie.
 
-- Identifiant
-- Nom
-- Date de péremption
-- Photo
-- Marque
-- Prix
-- Catégorie associée
+Les fonctionnalités disponibles sont :
 
-Fonctionnalités disponibles :
+- ajout d'un produit ;
+- affichage de la liste des produits ;
+- modification des informations d'un produit ;
+- suppression d'un produit ;
+- importation de produits via un fichier CSV.
 
-- Ajouter un produit
-- Consulter les produits
-- Modifier un produit
-- Supprimer un produit
-- Importer plusieurs produits depuis un fichier
+### Les clients
 
----
+Chaque client est enregistré avec :
 
-### Gestion des clients
+- son numéro client ;
+- son nom ;
+- son prénom ;
+- sa date d'inscription ;
+- son adresse.
 
-Chaque client contient les informations suivantes :
+Il est possible de créer, consulter, modifier et supprimer un client.
 
-- Numéro de client
-- Nom
-- Prénom
-- Date d'inscription
-- Adresse
+### Les commandes
 
-Fonctionnalités disponibles :
+Les clients peuvent passer des commandes composées de plusieurs produits.
 
-- Ajouter un client
-- Consulter les clients
-- Modifier un client
-- Supprimer un client
+Pour chaque commande, l'application permet :
 
----
-
-### Gestion des commandes
-
-Chaque commande contient :
-
-- Numéro de commande
-- Client associé
-- Date de commande
-
-Une commande est composée d'une liste de produits avec leur quantité.
-
-Fonctionnalités disponibles :
-
-- Créer une commande
-- Ajouter des produits à une commande
-- Modifier une commande
-- Supprimer une commande
-- Consulter l'historique des commandes
+- de sélectionner un client ;
+- d'ajouter plusieurs produits ;
+- de définir une quantité pour chaque produit ;
+- de consulter le détail de la commande ;
+- de modifier ou supprimer une commande.
 
 ---
 
-## Modèle de données
+## Base de données
 
-### Catégorie
+La base de données a été préparée en amont avec plusieurs données de démonstration afin de faciliter les tests de l'application.
 
-| Champ | Type |
-|---------|---------|
-| id | Integer |
-| nom | String |
-| descriptif | Text |
+Elle contient :
 
-### Produit
+- des catégories ;
+- des produits ;
+- des clients.
 
-| Champ | Type |
-|---------|---------|
-| id | Integer |
-| nom | String |
-| date_peremption | Date |
-| photo | String |
-| marque | String |
-| prix | Decimal |
-| categorie_id | Integer |
-
-### Client
-
-| Champ | Type |
-|---------|---------|
-| numero_client | Integer |
-| nom | String |
-| prenom | String |
-| date_inscription | Date |
-| adresse | String |
-
-### Commande
-
-| Champ | Type |
-|---------|---------|
-| numero_commande | Integer |
-| client_id | Integer |
-| date_commande | Date |
-
-### LigneCommande
-
-| Champ | Type |
-|---------|---------|
-| commande_id | Integer |
-| produit_id | Integer |
-| quantite | Integer |
+Les commandes sont créées directement depuis l'interface.
 
 ---
 
-## Initialisation de la base de données
 
-Avant le lancement de l'application, la base de données doit être préremplie avec :
+## Fiche de commande
 
-- Des catégories de produits
-- Des produits
-- Des clients
+Une fois une commande créée, l'application génère automatiquement une fiche récapitulative contenant :
 
-Ces données permettront de tester rapidement les fonctionnalités du site.
+- les informations du client ;
+- la date de la commande ;
+- les produits commandés ;
+- les quantités ;
+- le prix de chaque produit ;
+- le montant total de la commande.
+
+Cette fonctionnalité permet d'avoir un aperçu clair de la commande avant sa validation.
 
 ---
 
-## Import de produits par fichier
+## Technologies utilisées
 
-L'application permet l'ajout de produits via un fichier d'import.
+Pour réaliser ce projet, plusieurs technologies ont été utilisées :
 
-### Format attendu (CSV)
+- HTML
+- CSS
+- PHP
+- MySQL
+- Bootstrap
 
-```csv
-nom;date_peremption;photo;marque;prix;categorie
-Lait Demi-Ecreme;2025-12-31;lait.jpg;Candia;1.29;Produits laitiers
-Pates;2027-01-15;pates.jpg;Barilla;2.10;Epicerie
-Jus d'Orange;2025-08-01;jus.jpg;Tropicana;3.50;Boissons
+---
+
+## Ce que nous avons appris
+
+Grâce à ce projet, j'ai pu approfondir plusieurs notions importantes :
+
+- la conception d'une base de données relationnelle ;
+- la gestion des relations entre différentes tables ;
+- la réalisation d'opérations CRUD ;
+- le traitement des formulaires ;
+- l'importation de données depuis un fichier ;
+- la génération d'un récapitulatif de commande ;
+- le développement d'une application web complète connectée à une base de données.
+
+---
+
+## Auteur
+Koch Vincent, Prevot Justin, Dfil Ayoub
