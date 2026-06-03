@@ -1,0 +1,74 @@
+{% extends "boutique/base.html" %}
+{% block title %}Fiche commande #{{ commande.pk }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    <div class="no-print mb-3 d-flex gap-2">
+      <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-printer"></i> Imprimer
+      </button>
+      <a href="{% url 'boutique:commande_detail' commande.pk %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Retour
+      </a>
+    </div>
+
+    <div class="card shadow-sm p-4">
+      <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+          <h3 class="fw-bold text-success">Drive Market</h3>
+          <p class="text-muted mb-0">Bon de commande</p>
+        </div>
+        <div class="text-end">
+          <h5 class="mb-0">Commande #{{ commande.pk }}</h5>
+          <small class="text-muted">Date : {{ commande.date }}</small>
+        </div>
+      </div>
+
+      <hr>
+
+      <h6 class="text-muted mb-1">CLIENT</h6>
+      <p class="mb-0"><strong>{{ commande.client }}</strong></p>
+      <p class="text-muted small">{{ commande.client.adresse }}</p>
+
+      <hr>
+
+      <h6 class="text-muted mb-2">PRODUITS COMMANDÉS</h6>
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Produit</th>
+            <th>Marque</th>
+            <th class="text-center">Qté</th>
+            <th class="text-end">Prix unit.</th>
+            <th class="text-end">Sous-total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ligne in commande.lignes.all %}
+          <tr>
+            <td>{{ ligne.produit.nom }}</td>
+            <td>{{ ligne.produit.marque }}</td>
+            <td class="text-center">{{ ligne.quantite }}</td>
+            <td class="text-end">{{ ligne.produit.prix|floatformat:2 }} €</td>
+            <td class="text-end">{{ ligne.sous_total|floatformat:2 }} €</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="table-success">
+            <td colspan="4" class="text-end fw-bold">TOTAL TTC</td>
+            <td class="text-end fw-bold fs-5">{{ commande.total|floatformat:2 }} €</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <p class="text-muted small mt-4 text-center">
+        Merci pour votre commande – Drive Market
+      </p>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

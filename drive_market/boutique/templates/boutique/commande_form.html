@@ -1,0 +1,107 @@
+{% extends "boutique/base.html" %}
+{% block title %}{{ title }} – Drive Market{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="bi bi-cart-plus"></i> {{ title }}</h5>
+      </div>
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          {# ── En-tête commande ── #}
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Client</label>
+            {{ form.client }}
+            {% if form.client.errors %}
+              <div class="text-danger small">{{ form.client.errors }}</div>
+            {% endif %}
+          </div>
+
+          <hr>
+          <h6 class="mb-3">Produits commandés</h6>
+
+          {# ── Gestion formset (management form obligatoire) ── #}
+          {{ formset.management_form }}
+
+          <div id="lignes-container">
+            {% for ligne_form in formset %}
+              <div class="ligne-commande row g-2 mb-2 align-items-center">
+                {# champ id caché si édition #}
+                {{ ligne_form.id }}
+                <div class="col-6">
+                  <label class="form-label small text-muted">Produit</label>
+                  {{ ligne_form.produit }}
+                  {% if ligne_form.produit.errors %}
+                    <div class="text-danger small">{{ ligne_form.produit.errors }}</div>
+                  {% endif %}
+                </div>
+                <div class="col-3">
+                  <label class="form-label small text-muted">Quantité</label>
+                  {{ ligne_form.quantite }}
+                </div>
+                <div class="col-3 pt-3">
+                  {% if formset.can_delete %}
+                    <div class="form-check">
+                      {{ ligne_form.DELETE }}
+                      <label class="form-check-label text-danger small">Supprimer</label>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button type="button" id="add-ligne" class="btn btn-outline-success btn-sm mb-4">
+            <i class="bi bi-plus-circle"></i> Ajouter un produit
+          </button>
+
+          <div class="d-flex gap-2 mt-2">
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-check-lg"></i> Enregistrer
+            </button>
+            <a href="{% url 'boutique:commande_list' %}" class="btn btn-outline-secondary">
+              Annuler
+            </a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/*
+  Ajout dynamique d'une nouvelle ligne de commande.
+  On clone la première ligne vide et on incrémente les indices du formset.
+*/
+document.getElementById('add-ligne').addEventListener('click', function () {
+  const container = document.getElementById('lignes-container');
+  const totalForms = document.getElementById('id_lignes-TOTAL_FORMS');
+  const idx = parseInt(totalForms.value);
+
+  // Clone la première ligne (index 0) comme modèle
+  const firstLigne = container.querySelector('.ligne-commande');
+  const clone = firstLigne.cloneNode(true);
+
+  // Remplace l'index dans name et id
+  clone.innerHTML = clone.innerHTML
+    .replace(/lignes-\d+-/g, `lignes-${idx}-`)
+    .replace(/id_lignes-\d+-/g, `id_lignes-${idx}-`);
+
+  // Vide les valeurs
+  clone.querySelectorAll('input[type=number]').forEach(el => el.value = 1);
+  clone.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+  clone.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+
+  container.appendChild(clone);
+  totalForms.value = idx + 1;
+});
+</script>
+{% endblock %}
